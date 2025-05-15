@@ -3,7 +3,13 @@ const router = express.Router();
 const bookController = require('../controllers/books');
 const authorController = require('../controllers/authors');
 const genreController = require('../controllers/genres');
+const authController = require('../controllers/auth');
+const authMiddleware = require('../controllers/middleware');
 
+router.post('/register', authController.register);
+router.post('/login', authController.login);
+
+router.use(authMiddleware);
 
 router.get('/books', bookController.getAllBooks);
 router.get('/books/:id', bookController.getBookById);

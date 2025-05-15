@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {useEffect} from "react";
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import BooksPage from './pages/BooksPage';
 import BookForm from './components/BookForm';
@@ -7,16 +8,45 @@ import AuthorsPage from './pages/AuthorsPage';
 import AuthorForm from './components/AuthorForm';
 import GenresPage from './pages/GenresPage';
 import GenreForm from './components/GenreForm';
+import Login from "./components/Login";
+import {getCurrentUser} from "./services/auth";
+import Register from "./components/Register";
 
 function App() {
+    const user = getCurrentUser();
+
     return (
         <Router>
             <div className="app">
                 <Navbar />
                 <main className="content">
                     <Routes>
+
+                        <Route path="/" element={
+                            (() => {
+                                const Redirect = () => {
+                                    const navigate = useNavigate();
+
+                                    useEffect(() => {
+                                        if (user) {
+                                            navigate('/books');
+                                        } else {
+                                            navigate('/login');
+                                        }
+                                    }, [user, navigate]);
+
+                                    return null;
+                                };
+
+                                return <Redirect />;
+                            })()
+                        } />
+
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+
                         {/* Маршруты для книг */}
-                        <Route path="/" element={<BooksPage />} />
+                        <Route path="/books" element={<BooksPage />} />
                         <Route path="/books/new" element={<BookForm />} />
                         <Route path="/books/edit/:id" element={<BookForm />} />
 
