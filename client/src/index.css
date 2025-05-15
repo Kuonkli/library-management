@@ -29,6 +29,7 @@ body {
 .navbar a {
   color: white;
   text-decoration: none;
+  margin-left: 0.5rem;
 }
 
 .navbar a:hover {
@@ -138,7 +139,7 @@ table th {
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;

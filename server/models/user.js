@@ -1,36 +1,19 @@
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
-        username: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: { isEmail: true }
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        role: {
-            type: DataTypes.ENUM('user', 'admin'),
-            defaultValue: 'user'
-        }
-    }, {
-        tableName: 'users',
-        timestamps: false
-    });
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-    User.beforeSave(async (user) => {
-        if (user.changed('password')) {
-            const bcrypt = require('bcryptjs');
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-        }
-    });
+const UserSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    createdAt: { type: Date, default: Date.now }
+});
 
-    return User;
-};
+UserSchema.pre('save', async function(next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
+
+module.exports = mongoose.model('User', UserSchema);

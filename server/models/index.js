@@ -1,12 +1,14 @@
-const db = require('../config/db');
+const { sequelize, mongoose } = require('../config/db');
 const { DataTypes } = require('sequelize');
 
 const models = {
-    Book: require('./book')(db, DataTypes),
-    Author: require('./author')(db, DataTypes),
-    Genre: require('./genre')(db, DataTypes),
-    User: require('./user')(db, DataTypes)
+    Book: require('./book')(sequelize, DataTypes),
+    Author: require('./author')(sequelize, DataTypes),
+    Genre: require('./genre')(sequelize, DataTypes),
 };
+
+const User = require('./user');
+
 
 Object.values(models).forEach(model => {
     if (model.associate) {
@@ -16,5 +18,7 @@ Object.values(models).forEach(model => {
 
 module.exports = {
     ...models,
-    sequelize: db
+    sequelize, // для PostgreSQL
+    mongoose,  // подключение к MongoDB (если нужно явно)
+    User       // модель пользователей MongoDB
 };

@@ -1,9 +1,8 @@
+const { sequelize } = require('./config/db');
+const apiRoutes = require('./routes/api');
 const express = require('express');
 const cors = require('cors');
-const db = require('./config/db');
-const apiRoutes = require('./routes/api');
 const morgan = require('morgan');
-
 
 const app = express();
 
@@ -13,7 +12,7 @@ app.use(express.json());
 
 app.use('/api', apiRoutes);
 
-db.sync({ force: false })
+sequelize.sync({ force: false })
     .then(() => {
         const PORT = 5000;
         app.listen(PORT, () => {

@@ -71,10 +71,10 @@ const BookList = () => {
                         onChange={handleSortChange}
                         className="sort-select"
                     >
-                        <option value="title-asc">Title (A-Z)</option>
-                        <option value="title-desc">Title (Z-A)</option>
-                        <option value="publishYear-asc">Year (Oldest first)</option>
-                        <option value="publishYear-desc">Year (Newest first)</option>
+                        <option value="title-asc">Название (А-Я)</option>
+                        <option value="title-desc">Название (Я-А)</option>
+                        <option value="publishYear-asc">Год (Сначала старые)</option>
+                        <option value="publishYear-desc">Год (Сначала новые)</option>
                     </select>
 
                     <input
